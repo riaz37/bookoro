@@ -5,7 +5,7 @@ import { Card, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { ConfirmModal } from '@/components/ui/ConfirmModal';
 import { Calendar, XCircle, CheckCircle2, Plane } from 'lucide-react';
-import { Booking } from '@/hooks/useBookings';
+import { Booking } from '@/types/booking';
 import { motion } from 'framer-motion';
 
 interface BookingCardProps {

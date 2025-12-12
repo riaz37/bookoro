@@ -1,13 +1,5 @@
 import api from '@/lib/axios';
-
-export interface Booking {
-    id: string;
-    flightId: string;
-    userId: string;
-    status: 'CONFIRMED' | 'CANCELLED';
-    createdAt: string;
-    flight?: any;
-}
+import { Booking } from '@/types/booking';
 
 export const bookingsService = {
     async create(flightId: string) {

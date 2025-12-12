@@ -5,12 +5,7 @@ import { useRouter } from 'next/navigation';
 import { jwtDecode } from 'jwt-decode';
 import toast from 'react-hot-toast';
 import { authService } from '@/services/auth.service';
-
-interface User {
-    id: string;
-    email: string;
-    name?: string;
-}
+import { User } from '@/types/auth';
 
 interface AuthContextType {
     user: User | null;
@@ -18,6 +13,7 @@ interface AuthContextType {
     login: (email: string, pass: string) => Promise<void>;
     signup: (name: string, email: string, pass: string) => Promise<void>;
     logout: () => void;
+    verifyEmail: (email: string, otp: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -72,6 +68,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
     };
 
+    const verifyEmail = async (email: string, otp: string) => {
+        setLoading(true);
+        try {
+            await authService.verify(email, otp);
+            toast.success('Email verified successfully! You can now login.');
+        } catch (err: any) {
+            toast.error(err.response?.data?.message || err.message || 'Verification failed');
+            throw err;
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const logout = () => {
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
@@ -85,7 +94,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     return (
-        <AuthContext.Provider value={{ user, loading, login, signup, logout }}>
+        <AuthContext.Provider value={{ user, loading, login, signup, logout, verifyEmail }}>
             {children}
         </AuthContext.Provider>
     );

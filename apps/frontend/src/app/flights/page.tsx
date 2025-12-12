@@ -15,19 +15,20 @@ import Loading from '@/components/ui/Loading';
 
 export default function FlightsPage() {
     const [filters, setFilters] = useState<FlightFilters>({});
+    const [appliedFilters, setAppliedFilters] = useState<FlightFilters>({});
     const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
-    const { flights, loading, refetch } = useFlights();
+    const { flights, loading, refetch } = useFlights(appliedFilters);
     const { user, loading: authLoading } = useAuth();
     const router = useRouter();
 
     const handleSearch = () => {
-        refetch(filters);
+        setAppliedFilters(filters);
         setIsMobileFilterOpen(false); // Close mobile drawer after search
     };
 
     const handleClearFilters = () => {
         setFilters({});
-        refetch({});
+        setAppliedFilters({});
     };
 
     useEffect(() => {

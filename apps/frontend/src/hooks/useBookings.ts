@@ -1,39 +1,45 @@
-import { useState, useEffect, useCallback } from 'react';
-import { bookingsService, Booking } from '@/services/bookings.service';
+import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
+import { bookingsService } from '@/services/bookings.service';
+import { Booking } from '@/types/booking';
 import toast from 'react-hot-toast';
 
-export { type Booking };
-
 export function useBookings() {
-    const [bookings, setBookings] = useState<Booking[]>([]);
-    const [loading, setLoading] = useState(false);
+    const queryClient = useQueryClient();
 
-    const fetchBookings = useCallback(async () => {
-        setLoading(true);
-        try {
-            const data = await bookingsService.getUserBookings();
-            setBookings(data);
-        } catch (err) {
-            toast.error('Failed to load bookings.');
-        } finally {
-            setLoading(false);
-        }
-    }, []);
+    const { data: bookings = [], isLoading } = useQuery({
+        queryKey: ['bookings'],
+        queryFn: bookingsService.getUserBookings,
+    });
 
-    const cancelBooking = async (bookingId: string) => {
-        try {
-            await bookingsService.cancelBooking(bookingId);
-            toast.success('Booking cancelled successfully!');
-            await fetchBookings(); // Refresh list
-        } catch (err: any) {
-            toast.error(err.message || 'Failed to cancel booking.');
-            throw err;
-        }
+    const createBooking = useMutation({
+        mutationFn: bookingsService.create,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['bookings'] });
+            toast.success('Booking confirmed!');
+        },
+        onError: (error: any) => {
+            toast.error(error.response?.data?.message || 'Booking failed');
+        },
+    });
+
+    const cancelBooking = useMutation({
+        mutationFn: bookingsService.cancelBooking,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['bookings'] });
+            toast.success('Booking cancelled');
+        },
+        onError: (error: any) => {
+            toast.error(error.response?.data?.message || 'Cancellation failed');
+        },
+    });
+
+    return {
+        bookings,
+        isLoading,
+        createBooking: createBooking.mutate,
+        isCreating: createBooking.isPending,
+        cancelBooking: cancelBooking.mutate,
+        isCancelling: cancelBooking.isPending,
     };
-
-    useEffect(() => {
-        fetchBookings();
-    }, [fetchBookings]);
-
-    return { bookings, loading, refetch: fetchBookings, cancelBooking };
 }
+
