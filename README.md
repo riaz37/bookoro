@@ -23,25 +23,6 @@ A modern, full-stack flight booking application built with **NestJS**, **Next.js
 - **Auth**: Passport.js (JWT)
 - **Mail**: Nodemailer
 
-## 🐳 Docker Setup (Recommended)
-
-Run the entire application (Frontend + Backend + Database) with a single command:
-
-1.  **Configure Environment**:
-    Copy the example env file and defaults usually work out-of-the-box for specialized docker-compose setup.
-    ```bash
-    cp .env.example .env
-    ```
-
-2.  **Start Services**:
-    ```bash
-    docker-compose up --build
-    ```
-
-3.  **Access App**:
-    - **Frontend**: [http://localhost:3000](http://localhost:3000)
-    - **Backend API**: [http://localhost:4000](http://localhost:4000)
-    - **Swagger Docs**: [http://localhost:4000/api/docs](http://localhost:4000/api/docs)
 
 ## 💻 Local Development
 
@@ -51,7 +32,7 @@ Run the entire application (Frontend + Backend + Database) with a single command
     ```
 
 2.  **Start Database**:
-    Ensure you have a Postgres instance running (or use the one from docker-compose).
+    Ensure you have a Postgres instance running.
 
 3.  **Start Backend**:
     ```bash
@@ -71,4 +52,4 @@ Run the entire application (Frontend + Backend + Database) with a single command
 
 - `apps/backend`: NestJS API application.
 - `apps/frontend`: Next.js web application.
-- `docker-compose.yml`: Orchestration for local deployment.
+
