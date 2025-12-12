@@ -1,69 +1,74 @@
-# Mini Booking System (MVP)
+# Bookoro ✈️
 
-A simplified full-stack flight booking system built with NestJS, Next.js, and NeonDB (PostgreSQL).
+A modern, full-stack flight booking application built with **NestJS**, **Next.js**, **Prisma**, and **TailwindCSS**.
 
-## Tech Stack
-- **Backend**: NestJS, TypeScript, Prisma, NeonDB, JWT, Swagger.
-- **Frontend**: Next.js (App Router), Tailwind CSS, Axios, Custom Hooks.
-- **Database**: PostgreSQL (NeonDB).
+## 🚀 Features
 
-## Prerequisites
-- Node.js (v18+)
-- pnpm
-- A NeonDB account (or any PostgreSQL instance).
+- **Flight Search**: Search for flights with advanced filters (destination, price, date).
+- **Booking System**: Real-time seat availability, booking management, and cancellations.
+- **Modern UI**: Responsive, glassmorphic design with smooth animations.
+- **Authentication**: Secure JWT-based auth with email verification (OTP).
+- **Email Notifications**: Booking confirmations and verification emails.
 
-## Environment Setup
+## 🛠️ Tech Stack
 
-### 1. Clone the repository
-```bash
-git clone <repo-url>
-cd bookoro
-```
+### Frontend (`apps/frontend`)
+- **Framework**: [Next.js 15](https://nextjs.org/) (App Directory)
+- **Styling**: TailwindCSS, Framer Motion
+- **State/Data**: React Context, Axios
 
-### 2. Backend Setup
-Create `apps/backend/.env`:
-```env
-DATABASE_URL="postgresql://user:password@host/neondb?sslmode=require"
-JWT_SECRET="supersecret"
-PORT=4000
-```
-(Note: Using port 4000 to avoid conflict with Frontend).
+### Backend (`apps/backend`)
+- **Framework**: [NestJS](https://nestjs.com/)
+- **Database**: PostgreSQL with [Prisma ORM](https://www.prisma.io/)
+- **Auth**: Passport.js (JWT)
+- **Mail**: Nodemailer
 
-Install dependencies and migrate:
-```bash
-cd apps/backend
-pnpm install
-npx prisma migrate dev --name init
-pnpm start:dev
-```
-Backend API will be running at `http://localhost:4000`.
-Swagger Documentation: `http://localhost:4000/api/docs`.
+## 🐳 Docker Setup (Recommended)
 
-### 3. Frontend Setup
-Create `apps/frontend/.env` (optional, if using env vars for API URL):
-```env
-NEXT_PUBLIC_API_URL="http://localhost:4000"
-```
+Run the entire application (Frontend + Backend + Database) with a single command:
 
-Install dependencies and run:
-```bash
-cd apps/frontend
-pnpm install
-pnpm dev
-```
-Frontend will be running at `http://localhost:3000`.
+1.  **Configure Environment**:
+    Copy the example env file and defaults usually work out-of-the-box for specialized docker-compose setup.
+    ```bash
+    cp .env.example .env
+    ```
 
-## API Usage
-- **Auth**: `POST /auth/login`
-- **Users**: `POST /users` (Register)
-- **Flights**: `GET /flights`, `POST /flights` (Seeding)
-- **Bookings**: `POST /bookings` (Protected)
+2.  **Start Services**:
+    ```bash
+    docker-compose up --build
+    ```
 
-## Project Structure
-- `apps/backend`: NestJS application.
-- `apps/frontend`: Next.js application.
-- `apps/frontend/src/components`: Reusable UI components.
-- `apps/frontend/src/hooks`: Custom React hooks (`useAuth`, `useFlights`).
+3.  **Access App**:
+    - **Frontend**: [http://localhost:3000](http://localhost:3000)
+    - **Backend API**: [http://localhost:4000](http://localhost:4000)
+    - **Swagger Docs**: [http://localhost:4000/api/docs](http://localhost:4000/api/docs)
 
-## Screenshots
-(Placeholders for Swagger and Frontend UI screenshots)
+## 💻 Local Development
+
+1.  **Install Dependencies**:
+    ```bash
+    pnpm install
+    ```
+
+2.  **Start Database**:
+    Ensure you have a Postgres instance running (or use the one from docker-compose).
+
+3.  **Start Backend**:
+    ```bash
+    cd apps/backend
+    npx prisma generate
+    npx prisma migrate dev
+    pnpm dev
+    ```
+
+4.  **Start Frontend**:
+    ```bash
+    cd apps/frontend
+    pnpm dev
+    ```
+
+## 📂 Project Structure
+
+- `apps/backend`: NestJS API application.
+- `apps/frontend`: Next.js web application.
+- `docker-compose.yml`: Orchestration for local deployment.
