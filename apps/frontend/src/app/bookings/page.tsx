@@ -13,7 +13,7 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import Loading from '@/components/ui/Loading';
 
 export default function BookingsPage() {
-    const { bookings, loading, cancelBooking } = useBookings();
+    const { bookings, isLoading: loading, cancelBooking } = useBookings();
     const { user, loading: authLoading } = useAuth();
     const router = useRouter();
 
