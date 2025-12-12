@@ -4,7 +4,6 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { BookingsModule } from './bookings/bookings.module';
 import { FlightsModule } from './flights/flights.module';
-import { UsersModule } from './users/users.module';
 
 
 import { ConfigModule } from '@nestjs/config';
@@ -15,7 +14,6 @@ import { ConfigModule } from '@nestjs/config';
       isGlobal: true,
     }),
     AuthModule,
-    UsersModule,
     FlightsModule,
     BookingsModule,
   ],

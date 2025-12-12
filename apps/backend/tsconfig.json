@@ -20,7 +20,30 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@prisma/client": [
+        "./prisma/generated/client"
+      ],
+      "@/auth/*": [
+        "./src/auth/*"
+      ],
+      "@/users/*": [
+        "./src/users/*"
+      ],
+      "@/bookings/*": [
+        "./src/bookings/*"
+      ],
+      "@/flights/*": [
+        "./src/flights/*"
+      ],
+      "@/mail/*": [
+        "./src/mail/*"
+      ],
+      "@/prisma/*": [
+        "./src/prisma/*"
+      ]
+    }
   },
   "include": [
     "src"

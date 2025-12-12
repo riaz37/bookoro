@@ -25,19 +25,19 @@ export class UsersService {
     return this.prisma.user.findMany();
   }
 
-  async findOne(email: string) {
+  async findOne(email: string): Promise<User | null> {
     return this.prisma.user.findUnique({
       where: { email },
     });
   }
 
-  async findByVerificationToken(token: string) {
+  async findByVerificationToken(token: string): Promise<User | null> {
     return this.prisma.user.findFirst({
       where: { verificationToken: token } as any,
     });
   }
 
-  async findById(id: string) {
+  async findById(id: string): Promise<User | null> {
     return this.prisma.user.findUnique({
       where: { id },
     });
