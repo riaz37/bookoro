@@ -1,4 +1,5 @@
-import { Controller, Post, Body, UnauthorizedException, Get, Query } from '@nestjs/common';
+import { Controller, Post, Body, UnauthorizedException, Get, Query, UseGuards, Request } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { ApiTags, ApiOperation, ApiBody, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import { CreateUserDto } from '../users/dto/create-user.dto';
@@ -132,5 +133,13 @@ export class AuthController {
   @ApiResponse({ status: 401, description: 'User not found or already verified' })
   async resendOtp(@Body() body: { email: string }) {
     return this.authService.resendOtp(body.email);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('me')
+  @ApiOperation({ summary: 'Get current user profile' })
+  @ApiResponse({ status: 200, description: 'User profile retrieved' })
+  async getProfile(@Request() req) {
+    return this.authService.getProfile(req.user.userId);
   }
 }
