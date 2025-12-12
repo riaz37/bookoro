@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+
 const api = axios.create({
-    baseURL: 'http://localhost:4000',
+    baseURL: API_URL,
 });
 
 api.interceptors.request.use((config) => {
@@ -30,7 +32,7 @@ api.interceptors.response.use(
                     const userId = tokenPayload.sub;
 
                     // Attempt to refresh tokens with correct payload structure
-                    const { data } = await axios.post('http://localhost:4000/auth/refresh', {
+                    const { data } = await axios.post(`${API_URL}/auth/refresh`, {
                         refreshToken: refreshToken,
                         userId: userId
                     });

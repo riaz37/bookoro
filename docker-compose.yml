@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: apps/backend/Dockerfile
+    ports:
+      - "4000:4000"
+    environment:
+      - DATABASE_URL=postgresql://bookoro:bookoropass@postgres:5432/bookoro_db?schema=public
+      - JWT_SECRET=${JWT_SECRET:-bookoro-jwt-secret-key}
+      - MAIL_USER=${MAIL_USER}
+      - MAIL_PASS=${MAIL_PASS}
+      - PORT=4000
+    depends_on:
+      - postgres
+    networks:
+      - bookoro-network
+
+  postgres:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: bookoro
+      POSTGRES_PASSWORD: bookoropass
+      POSTGRES_DB: bookoro_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - bookoro-network
+
+networks:
+  bookoro-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
