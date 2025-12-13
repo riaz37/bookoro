@@ -4,9 +4,13 @@ import { Button } from '@/components/ui/Button';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Plane, Calendar, ShieldCheck, ArrowRight } from 'lucide-react';
+import { useWakeUpBackend } from '@/hooks/useWakeUpBackend';
 
 export default function Home() {
   const router = useRouter();
+
+  // Wake up the backend server on page load (for Render free tier)
+  useWakeUpBackend();
 
   const containerVariants = {
     hidden: { opacity: 0 },
