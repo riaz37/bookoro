@@ -67,7 +67,7 @@ api.interceptors.response.use(
         // Mark that first request is complete
         if (isFirstRequest) {
             isFirstRequest = false;
-            toast.success('✅ Server is ready!', { duration: 2000 });
+            toast.success('Server is ready!', { duration: 2000 });
         }
 
         return response;
