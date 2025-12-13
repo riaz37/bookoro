@@ -13,7 +13,6 @@ interface AuthContextType {
     login: (email: string, pass: string) => Promise<void>;
     signup: (name: string, email: string, pass: string) => Promise<void>;
     logout: () => void;
-    verifyEmail: (email: string, otp: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -58,23 +57,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const signup = async (name: string, email: string, pass: string) => {
         setLoading(true);
         try {
-            await authService.signup(name, email, pass);
-            toast.success('Account created! Please check your email for verification code.');
+            const { access_token, refresh_token, user } = await authService.signup(name, email, pass);
+            localStorage.setItem('access_token', access_token);
+            if (refresh_token) localStorage.setItem('refresh_token', refresh_token);
+            setUser(user);
+            router.push('/flights');
+            toast.success('Account created successfully!');
         } catch (err: any) {
             toast.error(err.response?.data?.message || err.message || 'Signup failed');
-            throw err;
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const verifyEmail = async (email: string, otp: string) => {
-        setLoading(true);
-        try {
-            await authService.verify(email, otp);
-            toast.success('Email verified successfully! You can now login.');
-        } catch (err: any) {
-            toast.error(err.response?.data?.message || err.message || 'Verification failed');
             throw err;
         } finally {
             setLoading(false);
@@ -94,7 +84,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     return (
-        <AuthContext.Provider value={{ user, loading, login, signup, logout, verifyEmail }}>
+        <AuthContext.Provider value={{ user, loading, login, signup, logout }}>
             {children}
         </AuthContext.Provider>
     );

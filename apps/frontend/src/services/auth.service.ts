@@ -11,16 +11,6 @@ export const authService = {
         return res.data;
     },
 
-    async verify(email: string, otp: string) {
-        const res = await api.post('/auth/verify', { email, otp });
-        return res.data;
-    },
-
-    async resendOtp(email: string) {
-        const res = await api.post('/auth/resend-otp', { email });
-        return res.data;
-    },
-
     async getProfile() {
         const res = await api.get('/auth/me');
         return res.data;

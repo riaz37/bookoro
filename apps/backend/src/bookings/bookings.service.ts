@@ -1,13 +1,11 @@
 import { Injectable, BadRequestException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { PrismaService } from '../prisma/prisma.service';
-import { MailService } from '../mail/mail.service';
 
 @Injectable()
 export class BookingsService {
   constructor(
     private prisma: PrismaService,
-    private mailService: MailService,
   ) { }
 
   async create(userId: string, createBookingDto: CreateBookingDto) {
@@ -34,20 +32,6 @@ export class BookingsService {
         },
         include: { flight: true, user: true },
       });
-
-      // Send email (non-blocking ideally, but here awaited or fire-and-forget)
-      this.mailService.sendBookingConfirmation(
-        booking.user.email,
-        booking.id,
-        {
-          destination: booking.flight.destination,
-          flightId: booking.flight.id,
-          origin: booking.flight.origin,
-          price: booking.flight.price,
-          departureTime: booking.flight.departureTime
-        },
-        booking.user.name || 'Traveler'
-      ).catch(err => console.error('Email failed', err));
 
       return booking;
     });

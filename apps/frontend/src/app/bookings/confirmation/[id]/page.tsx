@@ -67,9 +67,14 @@ export default function BookingConfirmationPage() {
                                 A confirmation email has been sent to <br />
                                 <span className="font-semibold">{user?.email}</span>
                             </div>
-                            <Button onClick={() => router.push('/flights')} className="w-full" size="lg">
-                                Book Another Flight
-                            </Button>
+                            <div className="space-y-3">
+                                <Button onClick={() => router.push('/flights')} className="w-full" size="lg">
+                                    Book Another Flight
+                                </Button>
+                                <Button onClick={() => router.push('/bookings')} className="w-full" variant="outline" size="lg">
+                                    View My Bookings
+                                </Button>
+                            </div>
                         </CardContent>
                     </Card>
                 </motion.div>

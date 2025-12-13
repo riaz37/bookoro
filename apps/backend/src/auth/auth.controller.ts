@@ -15,15 +15,15 @@ export class AuthController {
   @ApiBody({ type: CreateUserDto })
   @ApiResponse({
     status: 201,
-    description: 'User successfully registered',
+    description: 'User successfully registered and logged in',
     schema: {
       example: {
-        message: 'User registered successfully. Please verify your email.',
+        access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+        refresh_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
         user: {
           id: '550e8400-e29b-41d4-a716-446655440000',
           email: 'john.doe@example.com',
           name: 'John Doe',
-          isVerified: false
         }
       }
     }
@@ -59,7 +59,7 @@ export class AuthController {
       }
     }
   })
-  @ApiResponse({ status: 401, description: 'Invalid credentials or email not verified' })
+  @ApiResponse({ status: 401, description: 'Invalid credentials' })
   async login(@Body() body: any) {
     const user = await this.authService.validateUser(body.email, body.password);
     if (!user) {
@@ -84,55 +84,6 @@ export class AuthController {
   @ApiResponse({ status: 401, description: 'Invalid refresh token' })
   async refresh(@Body() body: RefreshTokenDto) {
     return this.authService.refreshTokens(body.userId, body.refreshToken);
-  }
-
-  @Post('verify')
-  @ApiOperation({ summary: 'Verify user email with OTP' })
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        email: { type: 'string', example: 'john.doe@example.com' },
-        otp: { type: 'string', example: '123456' }
-      }
-    }
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'Email verified successfully',
-    schema: {
-      example: {
-        message: 'Email verified successfully'
-      }
-    }
-  })
-  @ApiResponse({ status: 401, description: 'Invalid OTP' })
-  async verify(@Body() body: { email: string; otp: string }) {
-    return this.authService.verifyEmail(body.email, body.otp);
-  }
-
-  @Post('resend-otp')
-  @ApiOperation({ summary: 'Resend OTP to user email' })
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        email: { type: 'string', example: 'john.doe@example.com' }
-      }
-    }
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'OTP sent successfully',
-    schema: {
-      example: {
-        message: 'OTP sent successfully'
-      }
-    }
-  })
-  @ApiResponse({ status: 401, description: 'User not found or already verified' })
-  async resendOtp(@Body() body: { email: string }) {
-    return this.authService.resendOtp(body.email);
   }
 
   @UseGuards(AuthGuard('jwt'))

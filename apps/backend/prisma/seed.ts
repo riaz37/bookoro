@@ -279,7 +279,6 @@ async function main() {
         email: 'traveler@bookoro.com',
         name: 'Sample Traveler',
         password: await import('bcrypt').then(m => m.hash('Bookoro2025!', 10)),
-        isVerified: true,
     };
 
     const existingUser = await prisma.user.findUnique({
