@@ -24,6 +24,8 @@ export const metadata: Metadata = {
 
 import { AuthProvider } from '@/context/AuthContext';
 
+import QueryProvider from '@/providers/QueryProvider';
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -35,8 +37,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-50`}
       >
         <AuthProvider>
-          <Toaster position="top-center" />
-          {children}
+          <QueryProvider>
+            <Toaster position="top-center" />
+            {children}
+          </QueryProvider>
         </AuthProvider>
       </body>
     </html>

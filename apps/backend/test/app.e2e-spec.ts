@@ -16,6 +16,7 @@ describe('Bookoro App (e2e)', () => {
 
     const mockMailService = {
         sendVerificationEmail: jest.fn().mockResolvedValue(true),
+        sendOtpEmail: jest.fn().mockResolvedValue(true),
         sendBookingConfirmation: jest.fn().mockResolvedValue(true),
     };
 
@@ -64,17 +65,26 @@ describe('Bookoro App (e2e)', () => {
                 .expect(201);
 
             expect(res.body.user).toBeDefined();
-            expect(res.body.user.verificationToken).toBeDefined();
-            expect(mockMailService.sendVerificationEmail).toHaveBeenCalled();
+            // Verification token is not returned in response body for security
+            // expect(res.body.user.verificationToken).toBeDefined(); 
+
+            // Should call sendOtpEmail instead of sendVerificationEmail
+            expect(mockMailService.sendOtpEmail).toHaveBeenCalled();
+
+            // Capture the OTP from the mock call arguments
+            // sendOtpEmail(name, email, otp)
+            const sendOtpCall = mockMailService.sendOtpEmail.mock.calls[0];
+            expect(sendOtpCall[1]).toBe(email);
+            verificationToken = sendOtpCall[2]; // Capture the OTP
 
             userId = res.body.user.id;
-            verificationToken = res.body.user.verificationToken;
         });
 
-        it('/auth/verify (GET) should verify email', async () => {
+        it('/auth/verify (POST) should verify email', async () => {
             await request(app.getHttpServer())
-                .get(`/auth/verify?token=${verificationToken}`)
-                .expect(200);
+                .post('/auth/verify')
+                .send({ email, otp: verificationToken })
+                .expect(201);
         });
 
         it('/auth/login (POST) should return access and refresh tokens', async () => {

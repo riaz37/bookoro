@@ -39,12 +39,6 @@ export function SearchFilters({ filters, onFiltersChange, onSearch, onClear, isM
         onFiltersChange({ ...filters, [key]: undefined });
     };
 
-    const quickFilters = [
-        { label: 'Today', action: () => onFiltersChange({ ...filters, date: new Date().toISOString().split('T')[0] }) },
-        { label: 'Under $200', action: () => onFiltersChange({ ...filters, maxPrice: 200 }) },
-        { label: 'Under $500', action: () => onFiltersChange({ ...filters, maxPrice: 500 }) },
-    ];
-
     return (
         <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -94,22 +88,6 @@ export function SearchFilters({ filters, onFiltersChange, onSearch, onClear, isM
 
             {/* Scrollable Content */}
             <div className="flex-1 overflow-y-auto p-6 space-y-6">
-                {/* Quick Filters */}
-                <div>
-                    <h4 className="text-sm font-semibold text-slate-700 mb-3">Quick Filters</h4>
-                    <div className="flex flex-wrap gap-2">
-                        {quickFilters.map((qf, idx) => (
-                            <button
-                                key={idx}
-                                onClick={qf.action}
-                                className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium transition-all hover:scale-105"
-                            >
-                                {qf.label}
-                            </button>
-                        ))}
-                    </div>
-                </div>
-
                 {/* Location Section */}
                 <FilterSection
                     title="Location"

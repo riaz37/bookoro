@@ -127,6 +127,24 @@ export default function LoginPage() {
                             </Button>
                         </form>
 
+                        <div className='mt-4'>
+                            <Button
+                                variant="outline"
+                                onClick={() => {
+                                    setFormData({
+                                        email: 'traveler@bookoro.com',
+                                        password: 'Bookoro2025!',
+                                    });
+                                    setErrors({});
+                                    setServerError('');
+                                }}
+                                className="w-full text-xs"
+                                size="sm"
+                            >
+                                Quick Fill: Sample Traveler
+                            </Button>
+                        </div>
+
                         <div className="mt-6 text-center text-sm text-slate-500">
                             Don't have an account?{' '}
                             <Link
@@ -139,6 +157,6 @@ export default function LoginPage() {
                     </CardContent>
                 </Card>
             </motion.div>
-        </div>
+        </div >
     );
 }

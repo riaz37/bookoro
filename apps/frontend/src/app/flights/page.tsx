@@ -64,7 +64,7 @@ export default function FlightsPage() {
                 <div className="flex gap-8">
                     {/* Desktop Sidebar */}
                     <aside className="hidden lg:block w-80 flex-shrink-0">
-                        <div className="sticky top-8 rounded-2xl overflow-hidden shadow-xl border border-slate-200/50 bg-white/80 backdrop-blur-xl">
+                        <div className="sticky top-8 max-h-[calc(100vh-4rem)] flex flex-col rounded-2xl overflow-hidden shadow-xl border border-slate-200/50 bg-white/80 backdrop-blur-xl">
                             <SearchFilters
                                 filters={filters}
                                 onFiltersChange={setFilters}
