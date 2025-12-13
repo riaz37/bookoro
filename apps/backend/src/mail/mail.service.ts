@@ -9,12 +9,15 @@ export class MailService {
     constructor() {
         this.transporter = nodemailer.createTransport({
             host: 'smtp.gmail.com',
-            port: 465,
-            secure: true,
+            port: 587, // Use 587 instead of 465 for Render compatibility
+            secure: false, // Use STARTTLS instead of SSL
             auth: {
                 user: process.env.MAIL_USER,
                 pass: process.env.MAIL_PASS,
             },
+            tls: {
+                rejectUnauthorized: true
+            }
         });
     }
 
