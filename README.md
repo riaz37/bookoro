@@ -4,11 +4,11 @@ A modern, full-stack flight booking application built with **NestJS**, **Next.js
 
 ## 🚀 Features
 
-- **Flight Search**: Search for flights with advanced filters (destination, price, date).
+- **Flight Search**: Search for flights with intuitive top-bar filters (destination, price, date).
 - **Booking System**: Real-time seat availability, booking management, and cancellations.
 - **Modern UI**: Responsive, glassmorphic design with smooth animations.
-- **Authentication**: Secure JWT-based auth with email verification (OTP).
-- **Email Notifications**: Booking confirmations and verification emails.
+- **Authentication**: Secure JWT-based auth (Login/Signup).
+- **Email Notifications**: Professional HTML booking confirmation emails.
 
 ## 🛠️ Tech Stack
 
@@ -26,27 +26,54 @@ A modern, full-stack flight booking application built with **NestJS**, **Next.js
 
 ## 💻 Local Development
 
-1.  **Install Dependencies**:
-    ```bash
-    pnpm install
-    ```
+### Prerequisites
+- **Node.js** (v18+)
+- **pnpm** (v8+)
+- **PostgreSQL** (Running locally or via Docker)
 
-2.  **Start Database**:
-    Ensure you have a Postgres instance running.
+### 1. Installation
+Clone the repository and install dependencies from the root directory:
 
-3.  **Start Backend**:
-    ```bash
-    cd apps/backend
-    npx prisma generate
-    npx prisma migrate dev
-    pnpm dev
-    ```
+```bash
+git clone https://github.com/riaz37/bookoro.git
+cd bookoro
+pnpm install
+```
 
-4.  **Start Frontend**:
-    ```bash
-    cd apps/frontend
-    pnpm dev
-    ```
+### 2. Environment Setup
+Set up the environment variables for both applications:
+
+**Backend (`apps/backend`)**
+```bash
+cp apps/backend/.env.example apps/backend/.env
+# Update DATABASE_URL in apps/backend/.env to match your local Postgres setup
+```
+
+**Frontend (`apps/frontend`)**
+```bash
+cp apps/frontend/.env.local.example apps/frontend/.env.local
+```
+
+### 3. Database Setup
+Initialize the database and seed it with sample data (flights, users):
+
+```bash
+cd apps/backend
+npx prisma db push
+npx prisma db seed
+cd ../..
+```
+
+### 4. Running the App
+Start both the frontend and backend concurrently from the root:
+
+```bash
+pnpm dev
+```
+
+- **Frontend**: [http://localhost:3000](http://localhost:3000)
+- **Backend API**: [http://localhost:4000](http://localhost:4000)
+- **API Docs (Swagger)**: [http://localhost:4000/api](http://localhost:4000/api)
 
 ## 📂 Project Structure
 
